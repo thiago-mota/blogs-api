@@ -14,11 +14,11 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       password: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       image: {
         type: Sequelize.STRING
