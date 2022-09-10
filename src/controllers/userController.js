@@ -2,7 +2,6 @@
 const { status } = require('../helpers/statusMessages');
 const { createToken } = require('../helpers/createToken');
 const userService = require('../services/userService');
-// const { createUser, getAllUsers } = require('../services/userService');
 
 const createNewUser = async (request, response) => {
   try {
@@ -27,4 +26,19 @@ const getAllUsers = async (request, response) => {
   .json(getAll);
 };
 
-module.exports = { createNewUser, getAllUsers };
+const findUser = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const result = await userService.findUser(id);
+
+    return response
+    .status(status.OK_200)
+    .json(result);
+  } catch (error) {
+    return response
+    .status(status.NOT_FOUND_404)
+    .json({ message: error.message });
+  }
+};
+
+module.exports = { createNewUser, getAllUsers, findUser };
