@@ -1,12 +1,13 @@
 // const { errors } = require('../helpers/errorMessages');
 const { status } = require('../helpers/statusMessages');
 const { createToken } = require('../helpers/createToken');
-const { createUser, getAllUsersService } = require('../services/userService');
+const userService = require('../services/userService');
+// const { createUser, getAllUsers } = require('../services/userService');
 
 const createNewUser = async (request, response) => {
   try {
     const { displayName, email, password, image } = request.body;
-    const { id } = await createUser(displayName, email, password, image);
+    const { id } = await userService.createUser(displayName, email, password, image);
 
     return response
     .status(status.CREATED_201)
@@ -19,7 +20,7 @@ const createNewUser = async (request, response) => {
 };
 
 const getAllUsers = async (request, response) => {
-  const getAll = await getAllUsersService();
+  const getAll = await userService.getAllUsers();
 
   return response
   .status(status.OK_200)

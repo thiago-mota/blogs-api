@@ -9,9 +9,14 @@ const createUser = async (displayName, email, password, image) => {
   return newUser;
 };
 
-const getAllUsersService = async () => {
+const getAllUsers = async () => {
   const getAll = await User.findAll({ attributes: { exclude: 'password' } });
   return getAll;
 };
 
-module.exports = { createUser, getAllUsersService };
+const findUser = async (id) => {
+  const result = await User.findByPk(id);
+  return result;
+};
+
+module.exports = { createUser, getAllUsers, findUser };
