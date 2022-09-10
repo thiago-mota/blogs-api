@@ -13,4 +13,9 @@ const createToken = (id) => {
   return token;
 };
 
-module.exports = createToken;
+const decodeToken = (authorization) => {
+  const verifiedToken = jwt.verify(authorization, JWT_SECRET);
+  return verifiedToken;
+};
+
+module.exports = { createToken, decodeToken };
