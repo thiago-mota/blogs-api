@@ -1,11 +1,11 @@
-const { createUser } = require('../services/loginService');
+const { validateUser } = require('../services/loginService');
 const { status } = require('../helpers/statusMessages');
 const createToken = require('../helpers/createToken');
 
 const login = async (request, response) => {
   try {
     const { email, password } = request.body;
-    const { id } = await createUser(email, password);
+    const { id } = await validateUser(email, password);
 
     return response
     .status(status.OK_200)
