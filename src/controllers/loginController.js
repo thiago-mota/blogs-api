@@ -1,6 +1,6 @@
 const { validateUser } = require('../services/loginService');
 const { status } = require('../helpers/statusMessages');
-const createToken = require('../helpers/createToken');
+const { createToken } = require('../helpers/createToken');
 
 const login = async (request, response) => {
   try {

@@ -1,7 +1,7 @@
 // const { errors } = require('../helpers/errorMessages');
 const { status } = require('../helpers/statusMessages');
-const createToken = require('../helpers/createToken');
-const { createUser } = require('../services/userService');
+const { createToken } = require('../helpers/createToken');
+const { createUser, getAllUsersService } = require('../services/userService');
 
 const createNewUser = async (request, response) => {
   try {
@@ -18,4 +18,12 @@ const createNewUser = async (request, response) => {
   }
 };
 
-module.exports = { createNewUser };
+const getAllUsers = async (request, response) => {
+  const getAll = await getAllUsersService();
+
+  return response
+  .status(status.OK_200)
+  .json(getAll);
+};
+
+module.exports = { createNewUser, getAllUsers };
