@@ -16,4 +16,10 @@ const createCategory = async (request, response) => {
   }
 };
 
-module.exports = { createCategory };
+const findAllCategory = async (request, response) => {
+  const getAllCategories = await categoryService.getAllCategories();
+
+  return response.status(status.OK_200).json(getAllCategories);
+};
+
+module.exports = { createCategory, findAllCategory };
