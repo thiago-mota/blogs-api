@@ -9,7 +9,7 @@ const createCategory = async (category) => {
 };
 
 const getAllCategories = async () => {
-  const result = Category.findAll();
+  const result = await Category.findAll();
   return result;
 };
 
