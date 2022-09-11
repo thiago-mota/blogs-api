@@ -10,6 +10,7 @@ const errors = {
   INVALID_OR_EXPIRED_TOKEN: 'Expired or invalid token',
   NAME_IS_REQUIRED: '"name" is required',
   POST_DOES_NOT_EXIST: 'Post does not exist',
+  UNAUTHORIZED_USER: 'Unauthorized user',
 };
 
 module.exports = { errors };
