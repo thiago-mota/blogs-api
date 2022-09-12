@@ -26,4 +26,21 @@ const getPost = async (id) => {
     return post;
 };
 
-module.exports = { getAllPosts, getPost };
+const findPost = async (id) => {
+  const result = await BlogPost.findByPk(id, { attributes: { exclude: 'password' } });
+  return result;
+};
+
+const removePost = async (id) => {
+  const checkPost = await findPost(id);
+
+  if (!checkPost) throw Error(errors.POST_DOES_NOT_EXIST);
+
+  const removed = await BlogPost.destroy(
+    { where: { id } },
+  );
+
+  return removed;
+};
+
+module.exports = { getAllPosts, getPost, removePost };
