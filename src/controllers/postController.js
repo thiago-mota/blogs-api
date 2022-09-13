@@ -83,7 +83,7 @@ const searchPost = async (request, response) => {
     const { q } = request.query;
 
     const result = await postService.searchPost(q);
-
+    console.log('LOG DO RESULT ---->> ', result);
     return response
     .status(status.OK_200)
     .json(result);

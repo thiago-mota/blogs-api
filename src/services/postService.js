@@ -70,16 +70,24 @@ const removePost = async (id, loggedUserId, postUserId) => {
   };
 
   const searchPost = async (q) => {
-    const result = await BlogPost.findAll({ where: {
+    const result = await BlogPost.findAll({ include:
+    [
+      { model: User,
+      as: 'user',
+      attributes: { exclude: ['password'] },
+      },
+      { model: Category, as: 'categories' },
+    ],
+    where: {
       [Op.or]: [
-        { title: { [Op.like]: `%${q}%` } },
-        { content: { [Op.like]: `%${q}%` } },
-      ] },
+        { title: { [Op.substring]: q } },
+        { content: { [Op.substring]: q } },
+      ],
+    },
   });
-
     return result;
   };
-
+  
   // https://pt.stackoverflow.com/questions/355872/como-utilizar-o-like-do-sql-no-sequelize
 
 module.exports = { getAllPosts, getPost, removePost, createPost, searchPost };
