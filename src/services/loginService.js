@@ -5,8 +5,9 @@ const validateUser = async (email, password) => {
   const findUserInformation = await User.findOne({ where: { email, password } });
   if (!findUserInformation) throw Error(errors.INVALID_FIELDS);
 
-  const loginInformation = await User.create({ email, password });
-  return loginInformation;
+  return findUserInformation;
+  // const loginInformation = await User.create({ email, password });
+  // return loginInformation;
 };
 
 module.exports = { validateUser };

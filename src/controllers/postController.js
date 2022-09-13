@@ -34,6 +34,7 @@ const createPost = async (request, response) => {
   try {
     const { title, content, categoryIds } = request.body;
     const userId = request.user.data;
+    // console.log('CONSOLE TOSCO PQ SIM', request.user);
 
     const newPost = await postService.createPost(title, content, categoryIds, userId);
 

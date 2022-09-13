@@ -12,13 +12,12 @@ const tokenValidation = (request, response, next) => {
         .json({ message: errors.TOKEN_NOT_FOUND });
     }
     request.user = decodeToken(authorization);
+    next();
   } catch (error) {
     return response
       .status(status.UNAUTHORIZED_401)
       .json({ message: errors.INVALID_OR_EXPIRED_TOKEN });
   }
-
-  next();
 };
 
 module.exports = { tokenValidation };

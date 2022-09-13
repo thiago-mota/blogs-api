@@ -12,7 +12,7 @@ const User = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
   },
   {
-    timestamps: false,
+    timestamps: false, tableName: 'Users',
   });
 
   User.associate = (models) => {
@@ -22,3 +22,8 @@ const User = (sequelize, DataTypes) => {
 };
 
 module.exports = User;
+
+/* {
+	"message": "Cannot add or update a child row: a foreign key constraint fails (`blogs-api-dev`.`blogposts`, CONSTRAINT `blogposts_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)"
+}
+*/
