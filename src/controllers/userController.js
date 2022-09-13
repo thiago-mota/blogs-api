@@ -41,4 +41,19 @@ const findUser = async (request, response) => {
   }
 };
 
-module.exports = { createNewUser, getAllUsers, findUser };
+const deleteUser = async (request, response) => {
+  try {
+    const loggedUserId = request.user.data;
+    await userService.deleteUser(loggedUserId);
+
+    return response
+    .status(204)
+    .json();
+  } catch (error) {
+    return response
+    .status(status.NOT_FOUND_404)
+    .json({ message: error.message });
+  }
+};
+
+module.exports = { createNewUser, getAllUsers, findUser, deleteUser };

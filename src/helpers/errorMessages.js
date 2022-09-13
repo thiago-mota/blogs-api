@@ -11,6 +11,7 @@ const errors = {
   NAME_IS_REQUIRED: '"name" is required',
   POST_DOES_NOT_EXIST: 'Post does not exist',
   UNAUTHORIZED_USER: 'Unauthorized user',
+  CATEGORY_IDS_NOT_FOUND: '"categoryIds" not found',
 };
 
 module.exports = { errors };
