@@ -56,50 +56,9 @@ const createPost = async (title, content, categoryIds, userId) => {
   return newPost;
 };
 
-// Precisa ter a estrutura abaixo: { postId, categoryId }
-// const PostCategory = sequelize.define("PostCategory",
-// {
-//   postId: { <-----
-//     primaryKey: true, 
-//     foreignKey: true,
-//     type: DataTypes.INTEGER, 
-//   },
-//   categoryId: { <----
-//     primaryKey: true,
-//     foreignKey: true,
-//     type: DataTypes.INTEGER,
-//   },
-// },
-// { timestamps: false },
-// );
-
-// const findUserId = async (id) => {
-//   const post = await getPost(id);
-//   const uId = post.userId;
-//   // console.log('CONSOLE DO USERID ---->', uId);
-
-//   return uId;
-// };
-
-// const findPostOwnerId = async (id) => {
-//   const post = await getPost(id);
-//   const OPId = post;
-//   console.log('CONSOLE DO OPID ==---->>>>', OPId);
-//   const OP = await User.findByPk(OPId);
-//   // console.log('LOG DO OP!!! ---->>', OP.id);
-//   return OP.id;
-// };
-
 const removePost = async (id, loggedUserId, postUserId) => {
-    // const post = await getPost(id);
-    // const postUserId = post.userId;
-
-    // console.log('log post user id ====>>', postUserId);
-  
-    // const userId = findUserId(id);
-    // const OPId = findPostOwnerId(id);
-  
     console.log('POST USER ID', postUserId, 'LOGGED USER ID', loggedUserId);
+
     if (postUserId !== loggedUserId) throw Error(errors.UNAUTHORIZED_USER);
 
     const removed = await BlogPost.destroy(

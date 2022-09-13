@@ -1,5 +1,6 @@
 const postService = require('../services/postService');
 const { status } = require('../helpers/statusMessages');
+const { errors } = require('../helpers/errorMessages');
 // const createToken = require('../helpers/createToken');
 
 const getAllPosts = async (request, response) => {
@@ -51,31 +52,20 @@ const createPost = async (request, response) => {
 const deletePost = async (request, response) => {
   try {
     const { id } = request.params;
-    // const { authorization } = request.headers;
-  
-    console.log('log do Token ----->', request.user.data);
-    // const logged
-    // const decode = createToken.decodeToken(authorization);
     const loggedUserId = request.user.data;
-
-    // console.log('LOG DO DECODED ---->', loggedUserId);
-
     const post = await postService.getPost(id);
     const postUserId = post.userId;
-    // await postService.findUserId(id);
-    // await postService.findPostOwnerId(id);
-    // console.log('CONSOLE DO FIND POST OWNER ID ---->', OPId);
-
     await postService.removePost(id, loggedUserId, postUserId);
-
-    return response
-      .status(204)
-      .json();
+    return response.status(204).json();
   } catch (error) {
-    console.log(error);
-    return response
-      .status(404)
+    if (error.message === errors.UNAUTHORIZED_USER) {
+      return response
+      .status(401)
       .json({ message: error.message });
+    }
+    return response
+    .status(404)
+    .json({ message: error.message });
   }
 };
 
