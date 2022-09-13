@@ -1,13 +1,15 @@
 const express = require('express');
-const { getAllPosts, getPost, deletePost } = require('../controllers/postController');
+const { getAllPosts, getPost, deletePost, createPost,
+searchPost } = require('../controllers/postController');
 const { tokenValidation } = require('../middlewares/tokenValidation');
+const { validateFields } = require('../middlewares/postValidation');
 
 const postRoute = express.Router();
 
-postRoute.post('/', tokenValidation);
+postRoute.get('/search', tokenValidation, searchPost);
+postRoute.post('/', tokenValidation, validateFields, createPost);
 postRoute.get('/', tokenValidation, getAllPosts);
 postRoute.get('/:id', tokenValidation, getPost);
 postRoute.delete('/:id', tokenValidation, deletePost);
-postRoute.get('/search', tokenValidation);
 
 module.exports = postRoute;

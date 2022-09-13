@@ -1,5 +1,6 @@
 const postService = require('../services/postService');
 const { status } = require('../helpers/statusMessages');
+// const createToken = require('../helpers/createToken');
 
 const getAllPosts = async (request, response) => {
   try {
@@ -29,10 +30,42 @@ const getPost = async (request, response) => {
   }
 };
 
+const createPost = async (request, response) => {
+  try {
+    const { title, content, categoryIds } = request.body;
+    const userId = request.user.data;
+
+    const newPost = await postService.createPost(title, content, categoryIds, userId);
+
+    return response
+    .status(status.CREATED_201)
+    .json(newPost);
+  } catch (error) {
+    response
+    .status(status.BAD_REQUEST_400)
+    .json({ message: error.message });
+  }
+};
+
 const deletePost = async (request, response) => {
   try {
     const { id } = request.params;
-    await postService.removePost(id);
+    // const { authorization } = request.headers;
+  
+    console.log('log do Token ----->', request.user.data);
+    // const logged
+    // const decode = createToken.decodeToken(authorization);
+    const loggedUserId = request.user.data;
+
+    // console.log('LOG DO DECODED ---->', loggedUserId);
+
+    const post = await postService.getPost(id);
+    const postUserId = post.userId;
+    // await postService.findUserId(id);
+    // await postService.findPostOwnerId(id);
+    // console.log('CONSOLE DO FIND POST OWNER ID ---->', OPId);
+
+    await postService.removePost(id, loggedUserId, postUserId);
 
     return response
       .status(204)
@@ -45,4 +78,20 @@ const deletePost = async (request, response) => {
   }
 };
 
-module.exports = { getAllPosts, getPost, deletePost };
+const searchPost = async (request, response) => {
+  try {
+    const { q } = request.query;
+
+    const result = await postService.searchPost(q);
+
+    return response
+    .status(status.OK_200)
+    .json(result);
+  } catch (error) {
+    response
+    .status(status.BAD_REQUEST_400)
+    .json({ message: error.message });
+  }
+};
+
+module.exports = { getAllPosts, getPost, deletePost, createPost, searchPost };

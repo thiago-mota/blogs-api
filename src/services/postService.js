@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, User, Category } = require('../database/models');
 const { errors } = require('../helpers/errorMessages');
 
@@ -21,26 +22,64 @@ const getPost = async (id) => {
     { model: Category, as: 'categories' }],
     });
 
+    console.log('CONSOLE DO POST ----->', post);
     if (!post) throw Error(errors.POST_DOES_NOT_EXIST);
 
     return post;
 };
 
-const findPost = async (id) => {
-  const result = await BlogPost.findByPk(id, { attributes: { exclude: 'password' } });
-  return result;
+const createPost = async (title, content, categoryIds, userId) => {
+  const newPost = await BlogPost.create({ title, content, categoryIds, userId });
+  console.log('CONSOLE NEW POST ----->', newPost);
+  return newPost;
 };
 
-const removePost = async (id) => {
-  const checkPost = await findPost(id);
+// const findUserId = async (id) => {
+//   const post = await getPost(id);
+//   const uId = post.userId;
+//   // console.log('CONSOLE DO USERID ---->', uId);
 
-  if (!checkPost) throw Error(errors.POST_DOES_NOT_EXIST);
+//   return uId;
+// };
 
-  const removed = await BlogPost.destroy(
-    { where: { id } },
-  );
+// const findPostOwnerId = async (id) => {
+//   const post = await getPost(id);
+//   const OPId = post;
+//   console.log('CONSOLE DO OPID ==---->>>>', OPId);
+//   const OP = await User.findByPk(OPId);
+//   // console.log('LOG DO OP!!! ---->>', OP.id);
+//   return OP.id;
+// };
 
-  return removed;
-};
+const removePost = async (id, loggedUserId, postUserId) => {
+    // const post = await getPost(id);
+    // const postUserId = post.userId;
 
-module.exports = { getAllPosts, getPost, removePost };
+    // console.log('log post user id ====>>', postUserId);
+  
+    // const userId = findUserId(id);
+    // const OPId = findPostOwnerId(id);
+  
+    console.log('POST USER ID', postUserId, 'LOGGED USER ID', loggedUserId);
+    if (postUserId !== loggedUserId) throw Error(errors.UNAUTHORIZED_USER);
+
+    const removed = await BlogPost.destroy(
+      { where: { id } },
+    );
+    return removed;
+  };
+
+  const searchPost = async (q) => {
+    const result = await BlogPost.findAll({ where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${q}%` } },
+        { content: { [Op.like]: `%${q}%` } },
+      ] },
+  });
+
+    return result;
+  };
+
+  // https://pt.stackoverflow.com/questions/355872/como-utilizar-o-like-do-sql-no-sequelize
+
+module.exports = { getAllPosts, getPost, removePost, createPost, searchPost };
